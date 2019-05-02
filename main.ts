@@ -1,5 +1,6 @@
 import { KdbxMeta, Credentials, Kdbx, ProtectedValue } from "kdbxweb";
 import { GenericCSVFormat } from "./formats/GenericCSVFormat";
+import { LastPassFormat } from "./formats/LastPassFormat";
 
 export class KdbxImport {
 
@@ -13,6 +14,13 @@ export class KdbxImport {
     public static fromGenericCSV (meta: KdbxMeta, data: string) {
         const db = KdbxImport.createDb(meta, new Credentials(ProtectedValue.fromString("whatever")));
         const converter = new GenericCSVFormat(db);
+        const result = converter.convert(data);
+        return result;
+    }
+
+    public static fromLastPass (meta: KdbxMeta, data: string) {
+        const db = KdbxImport.createDb(meta, new Credentials(ProtectedValue.fromString("whatever")));
+        const converter = new LastPassFormat(db);
         const result = converter.convert(data);
         return result;
     }
