@@ -5,6 +5,8 @@ import * as kdbxweb from "kdbxweb";
 type CSVFieldMapping = { [x: string]: { col: string; protectedField: boolean; }};
 
 export class GenericCSVFormat {
+    private groupMapping: { [x: string]: kdbxweb.KdbxGroup} = {};
+
     constructor (protected db: kdbxweb.Kdbx) {
     }
 
@@ -25,6 +27,7 @@ export class GenericCSVFormat {
             case "username": mapping["UserName"] = { col: field, protectedField: this.db.meta.memoryProtection.UserName }; break;
             case "user name": mapping["UserName"] = { col: field, protectedField: this.db.meta.memoryProtection.UserName }; break;
             case "url": mapping["URL"] = { col: field, protectedField: this.db.meta.memoryProtection.URL }; break;
+            case "group": mapping["Group"] = { col: field, protectedField: false }; break;
             }
         });
 
@@ -38,11 +41,14 @@ export class GenericCSVFormat {
         }
     }
 
-    protected convertFromCSVRows (dataRows: string[], fieldMapping: CSVFieldMapping) {
+    protected convertFromCSVRows (dataRows: string[], fieldMapping: CSVFieldMapping, groupSeparator: string = "") {
         const importDTO = new ImportDTO();
-        const group = this.db.getDefaultGroup();
+        const rootGroup = this.db.getDefaultGroup();
 
         dataRows.forEach(row => {
+            const groupName = fieldMapping["Group"];
+            const groupValue = groupName && groupName.col ? row[groupName.col] : undefined;
+            const group = !groupValue ? rootGroup : this.groupFromKey(groupValue, rootGroup, groupSeparator);
             const entry = this.db.createEntry(group);
             Object.keys(fieldMapping).forEach(kdbxField => {
                 const { col: csvField, protectedField } = fieldMapping[kdbxField];
@@ -58,5 +64,13 @@ export class GenericCSVFormat {
         importDTO.db = this.db;
         importDTO.attachmentsSize = 0;
         return importDTO;
+    }
+
+    private groupFromKey (key: string, rootGroup: kdbxweb.KdbxGroup, groupSeparator: string) {
+        if (groupSeparator) throw new Error("Group separators not implemented");
+        if (this.groupMapping[key]) return this.groupMapping[key];
+        const group = this.db.createGroup(rootGroup, key);
+        this.groupMapping[key] = group;
+        return group;
     }
 }

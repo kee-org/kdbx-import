@@ -626,7 +626,7 @@ class KdbxGroup {
     enableAutoType: any;
     enableSearching: any;
     lastTopVisibleEntry: any;
-    groups: any[];
+    groups: KdbxGroup[];
     entries: KdbxEntry[];
     parentGroup: any;
     customData: any;
@@ -915,7 +915,7 @@ class Kdbx {
      * @param {KdbxGroup} group - parent group
      * @return {KdbxGroup}
      */
-    createGroup(name: string, group: KdbxGroup): KdbxGroup;
+    createGroup(group: KdbxGroup, name: string): KdbxGroup;
 
     /**
      * Adds new entry to group

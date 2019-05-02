@@ -18,7 +18,8 @@ export class LastPassFormat extends GenericCSVFormat {
             Title: { col: "name", protectedField: this.db.meta.memoryProtection.Title },
             Password: { col: "password", protectedField: this.db.meta.memoryProtection.Password },
             URL: { col: "url", protectedField: this.db.meta.memoryProtection.URL },
-            UserName: { col: "username", protectedField: this.db.meta.memoryProtection.UserName }
+            UserName: { col: "username", protectedField: this.db.meta.memoryProtection.UserName },
+            Group: { col: "grouping", protectedField: false }
         };
 
         try {
