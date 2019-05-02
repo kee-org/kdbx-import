@@ -1,0 +1,43 @@
+format_version: 3
+pipelines:
+  kdbxImport:
+    group: frontendLibs
+    environment_variables:
+      SKIP_PUBLISH_TO_NPM: ""
+    materials:
+      mygit:
+        type: configrepo
+    stages:
+      - installDeps:
+          #clean_workspace: true
+          jobs:
+            defaultJob:
+              tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - "ci"
+      - build:
+          jobs:
+            defaultJob:
+              tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - "start"
+      - test:
+          jobs:
+            defaultJob:
+              tasks:
+                - exec:
+                    command: npm
+                    arguments:
+                      - "test"
+      - publish:
+          jobs:
+            defaultJob:
+              tasks:
+                - exec:
+                    command: /bin/bash
+                    arguments:
+                      - "publish.sh"

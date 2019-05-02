@@ -1,0 +1,12 @@
+{
+    "cSpell.words": [
+        "Hashcash",
+        "camelize",
+        "jrpc",
+        "keepass",
+        "keeweb",
+        "papaparse",
+        "urlsum"
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib"
+}

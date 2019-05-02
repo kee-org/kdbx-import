@@ -1,0 +1,28 @@
+{
+  "name": "kdbx-import",
+  "version": "1.0.0",
+  "description": "Converts multiple password management data exports to a KDBX file",
+  "main": "main.js",
+  "types": "main.d.ts",
+  "keywords": [],
+  "author": "Kee Vault Ltd",
+  "license": "SEE LICENSE IN LICENSE",
+  "scripts": {
+    "start": "tsc -v && tsc && cp package.json dist/",
+    "test": "jest",
+    "lint": "tslint '*.ts'"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.12",
+    "@types/papaparse": "^4.5.9",
+    "jest": "^24.7.1",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.16.0",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "kdbxweb": "1.2.7",
+    "papaparse": "^4.6.3"
+  }
+}
