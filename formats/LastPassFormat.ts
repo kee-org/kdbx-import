@@ -1,12 +1,10 @@
 import { ImportDTO } from "../ImportDTO";
 import * as papaparse from "papaparse";
-import * as kdbxweb from "kdbxweb";
+import { GenericCSVFormat } from "./GenericCSVFormat";
 
 type CSVFieldMapping = { [x: string]: { col: string; protectedField: boolean; }};
 
-export class LastPassFormat {
-    constructor (private db: kdbxweb.Kdbx) {
-    }
+export class LastPassFormat extends GenericCSVFormat {
 
     convert (csv: string) {
 
@@ -29,27 +27,5 @@ export class LastPassFormat {
         } catch (e) {
             return ImportDTO.createError(e);
         }
-    }
-
-    private convertFromCSVRows (dataRows: string[], fieldMapping: CSVFieldMapping) {
-        const importDTO = new ImportDTO();
-        const group = this.db.getDefaultGroup();
-
-        dataRows.forEach(row => {
-            const entry = this.db.createEntry(group);
-            Object.keys(fieldMapping).forEach(kdbxField => {
-                const { col: csvField, protectedField } = fieldMapping[kdbxField];
-                const value = row[csvField];
-                if (value) {
-                    entry.fields[kdbxField] = protectedField
-                        ? kdbxweb.ProtectedValue.fromString(value)
-                        : value;
-                }
-            });
-        });
-
-        importDTO.db = this.db;
-        importDTO.attachmentsSize = 0;
-        return importDTO;
     }
 }

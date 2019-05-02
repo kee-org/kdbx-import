@@ -5,7 +5,7 @@ import * as kdbxweb from "kdbxweb";
 type CSVFieldMapping = { [x: string]: { col: string; protectedField: boolean; }};
 
 export class GenericCSVFormat {
-    constructor (private db: kdbxweb.Kdbx) {
+    constructor (protected db: kdbxweb.Kdbx) {
     }
 
     convert (csv: string) {
@@ -38,7 +38,7 @@ export class GenericCSVFormat {
         }
     }
 
-    private convertFromCSVRows (dataRows: string[], fieldMapping: CSVFieldMapping) {
+    protected convertFromCSVRows (dataRows: string[], fieldMapping: CSVFieldMapping) {
         const importDTO = new ImportDTO();
         const group = this.db.getDefaultGroup();
 
