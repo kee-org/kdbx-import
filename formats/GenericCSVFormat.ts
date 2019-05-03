@@ -6,13 +6,14 @@ type CSVFieldMapping = { [x: string]: { col: string; protectedField: boolean; }}
 
 export class GenericCSVFormat {
     private groupMapping: { [x: string]: kdbxweb.KdbxGroup} = {};
+    protected defaultCSVParseConfig = { header: true, skipEmptyLines: true, trimHeaders: true };
 
     constructor (protected db: kdbxweb.Kdbx) {
     }
 
     convert (csv: string) {
 
-        const { data, errors, meta } = papaparse.parse(csv, { header: true, skipEmptyLines: true });
+        const { data, errors, meta } = papaparse.parse(csv, this.defaultCSVParseConfig);
         if (!data || data.length < 1) return ImportDTO.createError("missing data");
         if (errors && errors.length >= 1) return ImportDTO.createError(errors);
         if (!meta || !meta.fields || meta.fields.length < 5) return ImportDTO.createError("bad meta fields found");
@@ -47,6 +48,7 @@ export class GenericCSVFormat {
         this.groupMapping = {};
 
         dataRows.forEach(row => {
+            const processedStandardFields: string[] = [];
             const groupName = fieldMapping["Group"];
             const groupValue = groupName && groupName.col ? row[groupName.col] : undefined;
             const group = !groupValue ? rootGroup : this.groupFromKey(groupValue, rootGroup, groupSeparator);
@@ -58,6 +60,14 @@ export class GenericCSVFormat {
                     entry.fields[kdbxField] = protectedField
                         ? kdbxweb.ProtectedValue.fromString(value)
                         : value;
+                    processedStandardFields.push(csvField);
+                }
+            });
+            Object.keys(row).forEach(col => {
+                if (processedStandardFields.indexOf(col) >= 0) return;
+                const value = row[col];
+                if (value) {
+                    entry.fields[col] = value;
                 }
             });
         });
@@ -69,7 +79,7 @@ export class GenericCSVFormat {
 
     private groupFromKey (key: string, rootGroup: kdbxweb.KdbxGroup, groupSeparator: string) {
         if (this.groupMapping[key]) return this.groupMapping[key];
-        const groupNames = key.split(groupSeparator);
+        const groupNames = groupSeparator ? key.split(groupSeparator) : [key];
         let targetGroup = rootGroup;
         for (const name of groupNames) {
             const nextGroup = targetGroup.groups.find(g => g.name === name);

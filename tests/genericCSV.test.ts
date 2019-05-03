@@ -52,6 +52,26 @@ describe("Imports from generic CSV", async () => {
         expect(getFieldText(entry.fields.Notes)).toEqual("some NOTES yep yep");
         expect(getFieldText(entry.fields.Password)).toEqual("fr3d");
     });
+
+    test("entry with custom fields", async () => {
+        const testData = `UserName, Password, URL, Title, Notes, Cust1, Custom FIELD 2, cf3
+"fred","fr3d","https://www.fred.fred","the TITLE","some NOTES yep yep","cust1",,"cust3"`;
+
+        const importDTO = KdbxImport.fromGenericCSV(meta, testData);
+        expect(importDTO.error).toBeUndefined();
+        expect(importDTO.attachmentsSize).toEqual(0);
+        const group = importDTO.db.getDefaultGroup();
+        expect(group.entries.length).toEqual(1);
+        const entry = group.entries[0];
+        expect(getFieldText(entry.fields.Title)).toEqual("the TITLE");
+        expect(getFieldText(entry.fields.URL)).toEqual("https://www.fred.fred");
+        expect(getFieldText(entry.fields.UserName)).toEqual("fred");
+        expect(getFieldText(entry.fields.Notes)).toEqual("some NOTES yep yep");
+        expect(getFieldText(entry.fields.Password)).toEqual("fr3d");
+        expect(getFieldText(entry.fields.Cust1)).toEqual("cust1");
+        expect(getFieldText(entry.fields.cf3)).toEqual("cust3");
+        expect(getFieldText(entry.fields["Custom FIELD 2"])).toBeUndefined();
+    });
 });
 
 function getFieldText (field: string | ProtectedValue) {
