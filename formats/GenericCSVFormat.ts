@@ -64,7 +64,7 @@ export class GenericCSVFormat {
                 }
             });
             Object.keys(row).forEach(col => {
-                if (processedStandardFields.indexOf(col) >= 0) return;
+                if (processedStandardFields.indexOf(col) >= 0 || this.isIgnoredField(col)) return;
                 const value = row[col];
                 if (value) {
                     entry.fields[col] = value;
@@ -75,6 +75,11 @@ export class GenericCSVFormat {
         importDTO.db = this.db;
         importDTO.attachmentsSize = 0;
         return importDTO;
+    }
+
+    protected isIgnoredField (col: string) {
+        if (["uuid"].indexOf(col) >= 0) return true;
+        return false;
     }
 
     private groupFromKey (key: string, rootGroup: kdbxweb.KdbxGroup, groupSeparator: string) {
