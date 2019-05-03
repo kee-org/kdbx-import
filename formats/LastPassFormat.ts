@@ -23,7 +23,7 @@ export class LastPassFormat extends GenericCSVFormat {
         };
 
         try {
-            const result = this.convertFromCSVRows(data, mapping);
+            const result = this.convertFromCSVRows(data, mapping, "\\");
             return result;
         } catch (e) {
             return ImportDTO.createError(e);

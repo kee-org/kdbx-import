@@ -44,6 +44,7 @@ export class GenericCSVFormat {
     protected convertFromCSVRows (dataRows: string[], fieldMapping: CSVFieldMapping, groupSeparator: string = "") {
         const importDTO = new ImportDTO();
         const rootGroup = this.db.getDefaultGroup();
+        this.groupMapping = {};
 
         dataRows.forEach(row => {
             const groupName = fieldMapping["Group"];
@@ -67,10 +68,19 @@ export class GenericCSVFormat {
     }
 
     private groupFromKey (key: string, rootGroup: kdbxweb.KdbxGroup, groupSeparator: string) {
-        if (groupSeparator) throw new Error("Group separators not implemented");
         if (this.groupMapping[key]) return this.groupMapping[key];
-        const group = this.db.createGroup(rootGroup, key);
-        this.groupMapping[key] = group;
-        return group;
+        const groupNames = key.split(groupSeparator);
+        let targetGroup = rootGroup;
+        for (const name of groupNames) {
+            const nextGroup = targetGroup.groups.find(g => g.name === name);
+            if (nextGroup) {
+                targetGroup = nextGroup;
+            } else {
+                targetGroup = this.db.createGroup(targetGroup, name);
+            }
+        }
+        this.groupMapping[key] = targetGroup;
+        return targetGroup;
     }
+
 }
