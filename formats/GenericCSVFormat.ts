@@ -1,15 +1,12 @@
 import { ImportDTO } from "../ImportDTO";
 import * as papaparse from "papaparse";
 import * as kdbxweb from "kdbxweb";
+import { Format } from "./Format";
 
 type CSVFieldMapping = { [x: string]: { col: string; protectedField: boolean; }};
 
-export class GenericCSVFormat {
-    private groupMapping: { [x: string]: kdbxweb.KdbxGroup} = {};
+export class GenericCSVFormat extends Format {
     protected defaultCSVParseConfig = { header: true, skipEmptyLines: true, trimHeaders: true };
-
-    constructor (protected db: kdbxweb.Kdbx) {
-    }
 
     convert (csv: string) {
 
@@ -75,27 +72,6 @@ export class GenericCSVFormat {
         importDTO.db = this.db;
         importDTO.attachmentsSize = 0;
         return importDTO;
-    }
-
-    protected isIgnoredField (col: string) {
-        if (["uuid"].indexOf(col) >= 0) return true;
-        return false;
-    }
-
-    private groupFromKey (key: string, rootGroup: kdbxweb.KdbxGroup, groupSeparator: string) {
-        if (this.groupMapping[key]) return this.groupMapping[key];
-        const groupNames = groupSeparator ? key.split(groupSeparator) : [key];
-        let targetGroup = rootGroup;
-        for (const name of groupNames) {
-            const nextGroup = targetGroup.groups.find(g => g.name === name);
-            if (nextGroup) {
-                targetGroup = nextGroup;
-            } else {
-                targetGroup = this.db.createGroup(targetGroup, name);
-            }
-        }
-        this.groupMapping[key] = targetGroup;
-        return targetGroup;
     }
 
 }

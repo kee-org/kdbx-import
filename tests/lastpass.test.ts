@@ -35,7 +35,7 @@ file:///C:/development/kee/keefox/Firefox%20addon/Test%20Pages/SimpleFormInIFram
         expect(getFieldText(entry.fields.Password)).toEqual("fr3d1");
     });
 
-    test("entry with a group", async () => {
+    test("entry with a group", () => {
         const testData = `url,username,password,extra,name,grouping,fav
 https://www.fred.fred,fred1,fr3d1,Some freddy notes,fred,Group name 1,0
 https://www.fredfred.fred,fred2,fr3d2,,fred 2,Group name 1,0
@@ -58,7 +58,7 @@ file:///C:/development/kee/keefox/Firefox%20addon/Test%20Pages/SimpleFormInIFram
         expect(getFieldText(entry.fields.Password)).toEqual("fr3d1");
     });
 
-    test("entry with nested groups", async () => {
+    test("entry with nested groups", () => {
         const testData = `url,username,password,extra,name,grouping,fav
 https://www.fred.fred,fred1,fr3d1,Some freddy notes,fred,Group name 1,0
 https://www.fredfred.fred,fred2,fr3d2,,fred 2,Group name 1\\Group name 2,0

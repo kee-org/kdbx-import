@@ -2,6 +2,7 @@ import { KdbxMeta, Credentials, Kdbx, ProtectedValue } from "kdbxweb";
 import { GenericCSVFormat } from "./formats/GenericCSVFormat";
 import { LastPassFormat } from "./formats/LastPassFormat";
 import { OnePasswordCSVFormat } from "./formats/OnePasswordCSVFormat";
+import { OnePasswordPIFFormat } from "./formats/OnePasswordPIFFormat";
 
 export class KdbxImport {
 
@@ -29,6 +30,13 @@ export class KdbxImport {
     public static fromOnePasswordCSV (meta: KdbxMeta, data: string) {
         const db = KdbxImport.createDb(meta, new Credentials(ProtectedValue.fromString("whatever")));
         const converter = new OnePasswordCSVFormat(db);
+        const result = converter.convert(data);
+        return result;
+    }
+
+    public static fromOnePasswordPIF (meta: KdbxMeta, data: string) {
+        const db = KdbxImport.createDb(meta, new Credentials(ProtectedValue.fromString("whatever")));
+        const converter = new OnePasswordPIFFormat(db);
         const result = converter.convert(data);
         return result;
     }

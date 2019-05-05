@@ -1,6 +1,6 @@
 {
   "name": "kdbx-import",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Converts multiple password management data exports to a KDBX file",
   "main": "main.js",
   "types": "main.d.ts",

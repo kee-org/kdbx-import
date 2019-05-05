@@ -13,9 +13,9 @@ const meta =
         }
     } as KdbxMeta;
 
-describe("Imports from generic CSV", async () => {
+describe("Imports from generic CSV", () => {
 
-    test("entry with no group", async () => {
+    test("entry with no group", () => {
         const testData = `UserName, Password, URL, Title, Notes
 "fred","fr3d","https://www.fred.fred","the TITLE","some NOTES yep yep"`;
 
@@ -32,7 +32,7 @@ describe("Imports from generic CSV", async () => {
         expect(getFieldText(entry.fields.Password)).toEqual("fr3d");
     });
 
-    test("entry with a group", async () => {
+    test("entry with a group", () => {
         const testData = `UserName, Password, URL, Title, Notes, Group
 "fred","fr3d","https://www.fred.fred","the TITLE","some NOTES yep yep","Group name 1"`;
 
@@ -53,7 +53,7 @@ describe("Imports from generic CSV", async () => {
         expect(getFieldText(entry.fields.Password)).toEqual("fr3d");
     });
 
-    test("entry with custom fields", async () => {
+    test("entry with custom fields", () => {
         const testData = `UserName, Password, URL, Title, Notes, Cust1, Custom FIELD 2, cf3
 "fred","fr3d","https://www.fred.fred","the TITLE","some NOTES yep yep","cust1",,"cust3"`;
 
