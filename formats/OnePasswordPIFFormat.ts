@@ -168,8 +168,4 @@ export class OnePasswordPIFFormat extends Format {
             });
         entry.fields.Password = currentPassword;
     }
-
-    private normaliseLineEndings (s: string) {
-        return s.split(/(?:\r\n|\r|\n)/).join("\n");
-    }
 }

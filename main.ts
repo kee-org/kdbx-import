@@ -3,6 +3,7 @@ import { GenericCSVFormat } from "./formats/GenericCSVFormat";
 import { LastPassFormat } from "./formats/LastPassFormat";
 import { OnePasswordCSVFormat } from "./formats/OnePasswordCSVFormat";
 import { OnePasswordPIFFormat } from "./formats/OnePasswordPIFFormat";
+import { DashlaneFormat } from "./formats/DashlaneFormat";
 
 export class KdbxImport {
 
@@ -37,6 +38,13 @@ export class KdbxImport {
     public static fromOnePasswordPIF (meta: KdbxMeta, data: string) {
         const db = KdbxImport.createDb(meta, new Credentials(ProtectedValue.fromString("whatever")));
         const converter = new OnePasswordPIFFormat(db);
+        const result = converter.convert(data);
+        return result;
+    }
+
+    public static fromDashlane (meta: KdbxMeta, data: string) {
+        const db = KdbxImport.createDb(meta, new Credentials(ProtectedValue.fromString("whatever")));
+        const converter = new DashlaneFormat(db);
         const result = converter.convert(data);
         return result;
     }

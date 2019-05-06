@@ -61,6 +61,10 @@ export class Format {
         this.addField("KPRPC JSON", kprpcEntryConfig, entry, true);
     }
 
+    protected normaliseLineEndings (s: string) {
+        return s.split(/(?:\r\n|\r|\n)/).join("\n");
+    }
+
     private normaliseFieldNameCase (name: string) {
         const normalised = name.toLowerCase();
         switch (normalised) {
