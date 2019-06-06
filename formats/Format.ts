@@ -31,6 +31,7 @@ export class Format {
     protected addField (origName: string, value: string, entry: KdbxEntry, forceProtection: boolean = false) {
         if (origName === "Tags") {
             this.processTags(this.removeInvalidCharacters(value), entry);
+            return;
         }
         let name = this.normaliseFieldNameCase(origName);
         while (this.hasValue(entry.fields[name])) {
