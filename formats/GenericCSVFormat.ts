@@ -46,7 +46,7 @@ export class GenericCSVFormat extends Format {
         dataRows.forEach(row => {
             const processedStandardFields: string[] = [];
             const groupName = fieldMapping["Group"];
-            const groupValue = groupName && groupName.col ? row[groupName.col] : undefined;
+            const groupValue = this.removeInvalidCharacters(groupName && groupName.col ? row[groupName.col] : undefined);
             const group = !groupValue ? rootGroup : this.groupFromKey(groupValue, rootGroup, groupSeparator);
             const entry = this.db.createEntry(group);
             Object.keys(fieldMapping).forEach(kdbxField => {

@@ -158,9 +158,10 @@ export class OnePasswordPIFFormat extends Format {
 
         items.sort((a, b) => a.time - b.time)
             .slice(importStart).forEach((oldPassword: any) => {
+                const value = this.removeInvalidCharacters(oldPassword.value);
                 entry.fields.Password = this.db.meta.memoryProtection.password
-                    ? ProtectedValue.fromString(oldPassword.value)
-                    : oldPassword.value;
+                    ? ProtectedValue.fromString(value)
+                    : value;
                 //TODO: kdbxweb doesn't support editing times yet
                 //entry.times.lastModTime = oldPassword.time;
 

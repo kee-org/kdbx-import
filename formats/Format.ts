@@ -2,6 +2,7 @@ import { KdbxGroup, Kdbx, KdbxEntry, ProtectedValue } from "kdbxweb";
 
 export class Format {
     protected groupMapping: { [x: string]: KdbxGroup} = {};
+    private invalidCharsRegex = /((?:[\0-\x08\x0B\f\x0E-\x1F\uFFFE\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]))/g;
 
     constructor (protected db: Kdbx) {
     }
@@ -33,8 +34,8 @@ export class Format {
             name = name + " (copy)";
         }
         entry.fields[name] = (forceProtection || this.db.meta.memoryProtection[this.normaliseFieldNameCaseMemoryProt(origName)])
-                ? ProtectedValue.fromString(value)
-                : value;
+                ? ProtectedValue.fromString(this.removeInvalidCharacters(value))
+                : this.removeInvalidCharacters(value);
     }
 
     protected convertURLs (urls: string[], entry: KdbxEntry) {
@@ -88,6 +89,11 @@ export class Format {
         if (!val) return false;
         if (val instanceof ProtectedValue) return val.getText().length > 0;
         return val.length > 0;
+    }
+
+    protected removeInvalidCharacters (text: string) {
+        if (!text) return text;
+        return text.replace(this.invalidCharsRegex, "");
     }
 
 }
