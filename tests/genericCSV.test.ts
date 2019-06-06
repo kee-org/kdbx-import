@@ -16,8 +16,8 @@ const meta =
 describe("Imports from generic CSV", () => {
 
     test("entry with no group", () => {
-        const testData = `UserName, Password, URL, Title, Notes
-"fred","fr3d","https://www.fred.fred","the TITLE","some NOTES yep yep"`;
+        const testData = `UserName, Password, URL, Title, Notes, Tags
+"fred","fr3d","https://www.fred.fred","the TITLE","some NOTES yep yep","Tag1,tag 2"`;
 
         const importDTO = KdbxImport.fromGenericCSV(meta, testData);
         expect(importDTO.error).toBeUndefined();
@@ -30,6 +30,7 @@ describe("Imports from generic CSV", () => {
         expect(getFieldText(entry.fields.UserName)).toEqual("fred");
         expect(getFieldText(entry.fields.Notes)).toEqual("some NOTES yep yep");
         expect(getFieldText(entry.fields.Password)).toEqual("fr3d");
+        expect(entry.tags).toEqual(["Tag1", "tag 2"]);
     });
 
     test("entry with a group", () => {
@@ -51,6 +52,7 @@ describe("Imports from generic CSV", () => {
         expect(getFieldText(entry.fields.UserName)).toEqual("fred");
         expect(getFieldText(entry.fields.Notes)).toEqual("some NOTES yep yep");
         expect(getFieldText(entry.fields.Password)).toEqual("fr3d");
+        expect(entry.tags).toEqual([]);
     });
 
     test("entry with custom fields", () => {

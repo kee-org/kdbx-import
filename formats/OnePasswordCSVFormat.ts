@@ -1,8 +1,6 @@
 import { ImportDTO } from "../ImportDTO";
 import * as papaparse from "papaparse";
-import { GenericCSVFormat } from "./GenericCSVFormat";
-
-type CSVFieldMapping = { [x: string]: { col: string; protectedField: boolean; }};
+import { GenericCSVFormat, CSVFieldMapping } from "./GenericCSVFormat";
 
 export class OnePasswordCSVFormat extends GenericCSVFormat {
 

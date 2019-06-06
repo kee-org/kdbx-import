@@ -2,7 +2,7 @@ import { ImportDTO } from "../ImportDTO";
 import * as papaparse from "papaparse";
 import { Format } from "./Format";
 
-type CSVFieldMapping = { [x: string]: { col: string; protectedField: boolean; }};
+export type CSVFieldMapping = { [x: string]: { col: string; protectedField: boolean; }};
 
 export class GenericCSVFormat extends Format {
     protected defaultCSVParseConfig = { header: true, skipEmptyLines: true, trimHeaders: true };
@@ -25,6 +25,7 @@ export class GenericCSVFormat extends Format {
             case "user name": mapping["UserName"] = { col: field, protectedField: this.db.meta.memoryProtection.UserName }; break;
             case "url": mapping["URL"] = { col: field, protectedField: this.db.meta.memoryProtection.URL }; break;
             case "group": mapping["Group"] = { col: field, protectedField: false }; break;
+            case "tags": mapping["Tags"] = { col: field, protectedField: false }; break;
             }
         });
 

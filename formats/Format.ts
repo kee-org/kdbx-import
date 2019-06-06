@@ -29,6 +29,9 @@ export class Format {
     }
 
     protected addField (origName: string, value: string, entry: KdbxEntry, forceProtection: boolean = false) {
+        if (origName === "Tags") {
+            this.processTags(this.removeInvalidCharacters(value), entry);
+        }
         let name = this.normaliseFieldNameCase(origName);
         while (this.hasValue(entry.fields[name])) {
             name = name + " (copy)";
@@ -36,6 +39,14 @@ export class Format {
         entry.fields[name] = (forceProtection || this.db.meta.memoryProtection[this.normaliseFieldNameCaseMemoryProt(origName)])
                 ? ProtectedValue.fromString(this.removeInvalidCharacters(value))
                 : this.removeInvalidCharacters(value);
+    }
+
+    processTags (tags: string, entry: KdbxEntry) {
+        if (!tags) return;
+        entry.tags = [];
+        for (const tag of tags.split(",")) {
+            entry.tags.push(tag);
+        }
     }
 
     protected convertURLs (urls: string[], entry: KdbxEntry) {

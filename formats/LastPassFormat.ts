@@ -1,8 +1,7 @@
 import { ImportDTO } from "../ImportDTO";
 import * as papaparse from "papaparse";
-import { GenericCSVFormat } from "./GenericCSVFormat";
-
-type CSVFieldMapping = { [x: string]: { col: string; protectedField: boolean; }};
+import { GenericCSVFormat, CSVFieldMapping } from "./GenericCSVFormat";
+import { KdbxEntry } from "kdbxweb";
 
 export class LastPassFormat extends GenericCSVFormat {
 
@@ -19,7 +18,8 @@ export class LastPassFormat extends GenericCSVFormat {
             Password: { col: "password", protectedField: this.db.meta.memoryProtection.Password },
             URL: { col: "url", protectedField: this.db.meta.memoryProtection.URL },
             UserName: { col: "username", protectedField: this.db.meta.memoryProtection.UserName },
-            Group: { col: "grouping", protectedField: false }
+            Group: { col: "grouping", protectedField: false },
+            Tags: { col: "fav", protectedField: false }
         };
 
         try {
@@ -27,6 +27,12 @@ export class LastPassFormat extends GenericCSVFormat {
             return result;
         } catch (e) {
             return ImportDTO.createError(e);
+        }
+    }
+
+    processTags (tags: string, entry: KdbxEntry) {
+        if (tags && tags === "1") {
+            entry.tags = ["Favourite"];
         }
     }
 }
