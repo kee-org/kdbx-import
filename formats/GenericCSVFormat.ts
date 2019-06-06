@@ -1,6 +1,5 @@
 import { ImportDTO } from "../ImportDTO";
 import * as papaparse from "papaparse";
-import * as kdbxweb from "kdbxweb";
 import { Format } from "./Format";
 
 type CSVFieldMapping = { [x: string]: { col: string; protectedField: boolean; }};
@@ -54,9 +53,7 @@ export class GenericCSVFormat extends Format {
                 const { col: csvField, protectedField } = fieldMapping[kdbxField];
                 const value = row[csvField];
                 if (value) {
-                    entry.fields[kdbxField] = protectedField
-                        ? kdbxweb.ProtectedValue.fromString(value)
-                        : value;
+                    this.addField(kdbxField, value, entry, protectedField);
                     processedStandardFields.push(csvField);
                 }
             });
@@ -64,7 +61,7 @@ export class GenericCSVFormat extends Format {
                 if (processedStandardFields.indexOf(col) >= 0 || this.isIgnoredField(col)) return;
                 const value = row[col];
                 if (value) {
-                    entry.fields[col] = value;
+                    this.addField(col, value, entry);
                 }
             });
         });

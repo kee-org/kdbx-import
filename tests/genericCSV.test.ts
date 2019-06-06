@@ -3,7 +3,7 @@ import { KdbxImport } from "../main";
 
 const meta =
     {
-        defaultUser: "none",
+        defaultUser: "",
         memoryProtection: {
             title: false,
             userName: false,
@@ -68,7 +68,7 @@ describe("Imports from generic CSV", () => {
         expect(getFieldText(entry.fields.UserName)).toEqual("fred");
         expect(getFieldText(entry.fields.Notes)).toEqual("some NOTES yep yep");
         expect(getFieldText(entry.fields.Password)).toEqual("fr3d");
-        expect(getFieldText(entry.fields.Cust1)).toEqual("cust1");
+        expect(getFieldText(entry.fields.cust1)).toEqual("cust1");
         expect(getFieldText(entry.fields.cf3)).toEqual("cust3");
         expect(getFieldText(entry.fields["Custom FIELD 2"])).toBeUndefined();
     });
