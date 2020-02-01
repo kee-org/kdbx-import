@@ -5,7 +5,7 @@ import { Format } from "./Format";
 export type CSVFieldMapping = { [x: string]: { col: string; protectedField: boolean; }};
 
 export class GenericCSVFormat extends Format {
-    protected defaultCSVParseConfig = { header: true, skipEmptyLines: true, trimHeaders: true };
+    protected defaultCSVParseConfig = { header: true, skipEmptyLines: true, transformHeader: (h: string) => h.trim() };
 
     convert (csv: string) {
 
