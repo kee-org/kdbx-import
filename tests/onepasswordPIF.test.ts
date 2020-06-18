@@ -1,4 +1,5 @@
 // tslint:disable:max-line-length
+// tslint:disable:ter-no-irregular-whitespace // buggy rule - try to re-enable when switching to ESlint
 import { KdbxMeta, ProtectedValue } from "kdbxweb";
 import { KdbxImport } from "../main";
 
