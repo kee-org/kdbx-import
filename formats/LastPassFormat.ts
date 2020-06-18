@@ -7,7 +7,7 @@ export class LastPassFormat extends GenericCSVFormat {
 
     convert (csv: string) {
 
-        const { data, errors, meta } = papaparse.parse(csv, this.defaultCSVParseConfig);
+        const { data, errors, meta } = papaparse.parse<string>(csv, this.defaultCSVParseConfig);
         if (!data || data.length < 1) return ImportDTO.createError("missing data");
         if (errors && errors.length >= 1) return ImportDTO.createError(errors);
         if (!meta || !meta.fields || meta.fields.length < 5) return ImportDTO.createError("bad meta fields found");

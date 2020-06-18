@@ -1,6 +1,6 @@
 {
   "name": "kdbx-import",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Converts multiple password management data exports to a KDBX file",
   "main": "main.js",
   "types": "main.d.ts",
@@ -14,15 +14,15 @@
   },
   "devDependencies": {
     "@types/jest": "^25.1.1",
-    "@types/papaparse": "^5.0.3",
+    "@types/papaparse": "^5.0.4",
     "jest": "^25.1.0",
     "ts-jest": "^25.1.0",
-    "tslint": "^6.0.0",
+    "tslint": "^6.1.2",
     "tslint-config-standard": "^9.0.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.9.5"
   },
   "dependencies": {
-    "kdbxweb": "1.5.7",
-    "papaparse": "^5.1.1"
+    "kdbxweb": "1.7.1",
+    "papaparse": "^5.2.0"
   }
 }
