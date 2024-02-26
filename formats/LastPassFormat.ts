@@ -13,11 +13,11 @@ export class LastPassFormat extends GenericCSVFormat {
         if (!meta || !meta.fields || meta.fields.length < 5) return ImportDTO.createError("bad meta fields found");
 
         const mapping: CSVFieldMapping = {
-            Notes: { col: "extra", protectedField: this.db.meta.memoryProtection.Notes },
-            Title: { col: "name", protectedField: this.db.meta.memoryProtection.Title },
-            Password: { col: "password", protectedField: this.db.meta.memoryProtection.Password },
-            URL: { col: "url", protectedField: this.db.meta.memoryProtection.URL },
-            UserName: { col: "username", protectedField: this.db.meta.memoryProtection.UserName },
+            Notes: { col: "extra", protectedField: this.db.meta.memoryProtection.notes ?? false },
+            Title: { col: "name", protectedField: this.db.meta.memoryProtection.title ?? false },
+            Password: { col: "password", protectedField: this.db.meta.memoryProtection.password ?? false },
+            URL: { col: "url", protectedField: this.db.meta.memoryProtection.url ?? false },
+            UserName: { col: "username", protectedField: this.db.meta.memoryProtection.userName ?? false },
             Group: { col: "grouping", protectedField: false },
             Tags: { col: "fav", protectedField: false }
         };

@@ -43,7 +43,7 @@ export class OnePasswordPIFFormat extends Format {
         try {
             const importDTO = new ImportDTO();
             const rootGroup = this.db.getDefaultGroup();
-            const recycleBin = this.db.getGroup(this.db.meta.recycleBinUuid);
+            const recycleBin = this.db.getGroup(this.db.meta.recycleBinUuid ?? "");
             this.groupMapping = {};
 
             pif.split(/(?:\r\n|\r|\n)/).forEach(line => {
@@ -150,23 +150,23 @@ export class OnePasswordPIFFormat extends Format {
     }
 
     private createPasswordHistory (items: any[], entry: KdbxEntry) {
-        const importLimit = items.length > this.db.meta.historyMaxItems ? this.db.meta.historyMaxItems : items.length;
+        const importLimit = items.length > (this.db.meta.historyMaxItems ?? 0) ? this.db.meta.historyMaxItems ?? 0 : items.length;
         const importStart = items.length - importLimit;
 
-        const currentPassword = entry.fields.Password;
+        const currentPassword = entry.fields.get('Password');
         // const currentModTime = (entry.times as any).lastModTime;
 
         items.sort((a, b) => a.time - b.time)
             .slice(importStart).forEach((oldPassword: any) => {
                 const value = this.removeInvalidCharacters(oldPassword.value);
-                entry.fields.Password = this.db.meta.memoryProtection.password
+                entry.fields.set('Password', this.db.meta.memoryProtection.password
                     ? ProtectedValue.fromString(value)
-                    : value;
+                    : value);
                 //TODO: kdbxweb doesn't support editing times yet
                 //entry.times.lastModTime = oldPassword.time;
 
                 entry.pushHistory();
             });
-        entry.fields.Password = currentPassword;
+        entry.fields.set('Password', currentPassword ?? "" );
     }
 }

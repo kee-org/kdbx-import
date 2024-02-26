@@ -12,11 +12,11 @@ export class OnePasswordCSVFormat extends GenericCSVFormat {
         if (!meta || !meta.fields || meta.fields.length < 5) return ImportDTO.createError("bad meta fields found");
 
         const mapping: CSVFieldMapping = {
-            Notes: { col: "Notes", protectedField: this.db.meta.memoryProtection.Notes },
-            Title: { col: "Title", protectedField: this.db.meta.memoryProtection.Title },
-            Password: { col: "Password", protectedField: this.db.meta.memoryProtection.Password },
-            URL: { col: "URL", protectedField: this.db.meta.memoryProtection.URL },
-            UserName: { col: "Username", protectedField: this.db.meta.memoryProtection.UserName },
+            Notes: { col: "Notes", protectedField: this.db.meta.memoryProtection.notes ?? false },
+            Title: { col: "Title", protectedField: this.db.meta.memoryProtection.title ?? false },
+            Password: { col: "Password", protectedField: this.db.meta.memoryProtection.password ?? false },
+            URL: { col: "URL", protectedField: this.db.meta.memoryProtection.url ?? false },
+            UserName: { col: "Username", protectedField: this.db.meta.memoryProtection.userName ?? false },
             Group: { col: "Type", protectedField: false }
         };
 

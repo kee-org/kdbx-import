@@ -1,4 +1,4 @@
-import { KdbxMeta, ProtectedValue } from "kdbxweb";
+import { KdbxEntryField, KdbxMeta, ProtectedValue } from "kdbxweb";
 import { KdbxImport } from "../main";
 
 const meta =
@@ -25,11 +25,11 @@ describe("Imports from generic CSV", () => {
         const group = importDTO.db.getDefaultGroup();
         expect(group.entries.length).toEqual(1);
         const entry = group.entries[0];
-        expect(getFieldText(entry.fields.Title)).toEqual("the TITLE");
-        expect(getFieldText(entry.fields.URL)).toEqual("https://www.fred.fred");
-        expect(getFieldText(entry.fields.UserName)).toEqual("fred");
-        expect(getFieldText(entry.fields.Notes)).toEqual("some NOTES yep yep");
-        expect(getFieldText(entry.fields.Password)).toEqual("fr3d");
+        expect(getFieldText(entry.fields.get("Title"))).toEqual("the TITLE");
+        expect(getFieldText(entry.fields.get("URL"))).toEqual("https://www.fred.fred");
+        expect(getFieldText(entry.fields.get("UserName"))).toEqual("fred");
+        expect(getFieldText(entry.fields.get("Notes"))).toEqual("some NOTES yep yep");
+        expect(getFieldText(entry.fields.get("Password"))).toEqual("fr3d");
         expect(entry.tags).toEqual(["Tag1", "tag 2"]);
     });
 
@@ -47,11 +47,11 @@ describe("Imports from generic CSV", () => {
         expect(group.entries.length).toEqual(1);
         expect(group.name).toEqual("Group name 1");
         const entry = group.entries[0];
-        expect(getFieldText(entry.fields.Title)).toEqual("the TITLE");
-        expect(getFieldText(entry.fields.URL)).toEqual("https://www.fred.fred");
-        expect(getFieldText(entry.fields.UserName)).toEqual("fred");
-        expect(getFieldText(entry.fields.Notes)).toEqual("some NOTES yep yep");
-        expect(getFieldText(entry.fields.Password)).toEqual("fr3d");
+        expect(getFieldText(entry.fields.get("Title"))).toEqual("the TITLE");
+        expect(getFieldText(entry.fields.get("URL"))).toEqual("https://www.fred.fred");
+        expect(getFieldText(entry.fields.get("UserName"))).toEqual("fred");
+        expect(getFieldText(entry.fields.get("Notes"))).toEqual("some NOTES yep yep");
+        expect(getFieldText(entry.fields.get("Password"))).toEqual("fr3d");
         expect(entry.tags).toEqual([]);
     });
 
@@ -65,17 +65,17 @@ describe("Imports from generic CSV", () => {
         const group = importDTO.db.getDefaultGroup();
         expect(group.entries.length).toEqual(1);
         const entry = group.entries[0];
-        expect(getFieldText(entry.fields.Title)).toEqual("the TITLE");
-        expect(getFieldText(entry.fields.URL)).toEqual("https://www.fred.fred");
-        expect(getFieldText(entry.fields.UserName)).toEqual("fred");
-        expect(getFieldText(entry.fields.Notes)).toEqual("some NOTES yep yep");
-        expect(getFieldText(entry.fields.Password)).toEqual("fr3d");
-        expect(getFieldText(entry.fields.cust1)).toEqual("cust1");
-        expect(getFieldText(entry.fields.cf3)).toEqual("cust3");
-        expect(getFieldText(entry.fields["Custom FIELD 2"])).toBeUndefined();
+        expect(getFieldText(entry.fields.get("Title"))).toEqual("the TITLE");
+        expect(getFieldText(entry.fields.get("URL"))).toEqual("https://www.fred.fred");
+        expect(getFieldText(entry.fields.get("UserName"))).toEqual("fred");
+        expect(getFieldText(entry.fields.get("Notes"))).toEqual("some NOTES yep yep");
+        expect(getFieldText(entry.fields.get("Password"))).toEqual("fr3d");
+        expect(getFieldText(entry.fields.get("cust1"))).toEqual("cust1");
+        expect(getFieldText(entry.fields.get("cf3"))).toEqual("cust3");
+        expect(getFieldText(entry.fields.get("Custom FIELD 2"))).toBeUndefined();
     });
 });
 
-function getFieldText (field: string | ProtectedValue) {
+function getFieldText (field?: KdbxEntryField) {
     return field instanceof ProtectedValue ? field.getText() : field;
 }

@@ -1,5 +1,5 @@
 // tslint:disable:max-line-length
-import { KdbxMeta, ProtectedValue } from "kdbxweb";
+import { KdbxEntryField, KdbxMeta, ProtectedValue } from "kdbxweb";
 import { KdbxImport } from "../main";
 
 const meta =
@@ -49,16 +49,16 @@ acutely slashing upper cringing lunchbox tapioca wrongful unbeaten sift.",,,,,,,
         expect(nestedGroup.entries.length).toEqual(2);
         expect(nestedGroup.name).toEqual("WS");
         const entry = group.entries[0];
-        expect(getFieldText(entry.fields.Title)).toEqual("dpbx@afoqwdr.tx");
-        expect(getFieldText(entry.fields.URL)).toEqual("https://afoqwdr.tx");
-        expect(getFieldText(entry.fields.UserName)).toEqual("dpbx");
-        expect(getFieldText(entry.fields.Notes)).toEqual("Some freddy notes");
-        expect(getFieldText(entry.fields.Password)).toEqual("9KVHnx:.S_S;cF`=CE@e\p{v6");
-        expect(getFieldText(entry.fields.uuid)).toBeUndefined();
-        expect(getFieldText(entry.fields["section:znewkwbrj5gzj7lzareraknpre"])).toBeUndefined();
+        expect(getFieldText(entry.fields.get("Title"))).toEqual("dpbx@afoqwdr.tx");
+        expect(getFieldText(entry.fields.get("URL"))).toEqual("https://afoqwdr.tx");
+        expect(getFieldText(entry.fields.get("UserName"))).toEqual("dpbx");
+        expect(getFieldText(entry.fields.get("Notes"))).toEqual("Some freddy notes");
+        expect(getFieldText(entry.fields.get("Password"))).toEqual("9KVHnx:.S_S;cF`=CE@e\p{v6");
+        expect(getFieldText(entry.fields.get("uuid"))).toBeUndefined();
+        expect(getFieldText(entry.fields.get("section:znewkwbrj5gzj7lzareraknpre"))).toBeUndefined();
     });
 });
 
-function getFieldText (field: string | ProtectedValue) {
+function getFieldText (field?: KdbxEntryField) {
     return field instanceof ProtectedValue ? field.getText() : field;
 }

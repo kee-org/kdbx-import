@@ -34,12 +34,12 @@ export class Format {
             return;
         }
         let name = this.normaliseFieldNameCase(origName);
-        while (this.hasValue(entry.fields[name])) {
+        while (this.hasValue(entry.fields.get(name))) {
             name = name + " (copy)";
         }
-        entry.fields[name] = (forceProtection || this.db.meta.memoryProtection[this.normaliseFieldNameCaseMemoryProt(origName)])
+        entry.fields.set(name, (forceProtection || this.db.meta.memoryProtection[this.normaliseFieldNameCaseMemoryProt(origName)])
                 ? ProtectedValue.fromString(this.removeInvalidCharacters(value))
-                : this.removeInvalidCharacters(value);
+                : this.removeInvalidCharacters(value));
     }
 
     processTags (tags: string, entry: KdbxEntry) {

@@ -18,12 +18,12 @@ export class GenericCSVFormat extends Format {
 
         meta.fields.forEach(field => {
             switch (field.trim().toLowerCase()) {
-            case "notes": mapping["Notes"] = { col: field, protectedField: this.db.meta.memoryProtection.Notes }; break;
-            case "title": mapping["Title"] = { col: field, protectedField: this.db.meta.memoryProtection.Title }; break;
-            case "password": mapping["Password"] = { col: field, protectedField: this.db.meta.memoryProtection.Password }; break;
-            case "username": mapping["UserName"] = { col: field, protectedField: this.db.meta.memoryProtection.UserName }; break;
-            case "user name": mapping["UserName"] = { col: field, protectedField: this.db.meta.memoryProtection.UserName }; break;
-            case "url": mapping["URL"] = { col: field, protectedField: this.db.meta.memoryProtection.URL }; break;
+            case "notes": mapping["Notes"] = { col: field, protectedField: this.db.meta.memoryProtection.notes ?? false }; break;
+            case "title": mapping["Title"] = { col: field, protectedField: this.db.meta.memoryProtection.title ?? false }; break;
+            case "password": mapping["Password"] = { col: field, protectedField: this.db.meta.memoryProtection.password ?? false }; break;
+            case "username": mapping["UserName"] = { col: field, protectedField: this.db.meta.memoryProtection.userName ?? false }; break;
+            case "user name": mapping["UserName"] = { col: field, protectedField: this.db.meta.memoryProtection.userName ?? false }; break;
+            case "url": mapping["URL"] = { col: field, protectedField: this.db.meta.memoryProtection.url ?? false }; break;
             case "group": mapping["Group"] = { col: field, protectedField: false }; break;
             case "tags": mapping["Tags"] = { col: field, protectedField: false }; break;
             }

@@ -1,6 +1,6 @@
 // tslint:disable:max-line-length
 // tslint:disable:ter-no-irregular-whitespace // buggy rule - try to re-enable when switching to ESlint
-import { KdbxMeta, ProtectedValue } from "kdbxweb";
+import { KdbxEntryField, KdbxMeta, ProtectedValue } from "kdbxweb";
 import { KdbxImport } from "../main";
 
 const meta =
@@ -66,13 +66,13 @@ describe("Imports from OnePassword PIF", () => {
         expect(group.entries.length).toEqual(2);
         expect(group.name).toEqual("Finance");
         const entry = group.entries[0];
-        expect(getFieldText(entry.fields.Title)).toEqual("Credit Card");
-        expect(getFieldText(entry.fields.URL)).toEqual("");
-        expect(getFieldText(entry.fields.UserName)).toEqual("");
-        expect(getFieldText(entry.fields.Notes)).toEqual("This is an example note");
-        expect(getFieldText(entry.fields.Password)).toEqual("");
-        expect(getFieldText(entry.fields.uuid)).toBeUndefined();
-        expect(getFieldText(entry.fields["cardholder name"])).toEqual("Example Cardholder Name");
+        expect(getFieldText(entry.fields.get("Title"))).toEqual("Credit Card");
+        expect(getFieldText(entry.fields.get("URL"))).toEqual("");
+        expect(getFieldText(entry.fields.get("UserName"))).toEqual("");
+        expect(getFieldText(entry.fields.get("Notes"))).toEqual("This is an example note");
+        expect(getFieldText(entry.fields.get("Password"))).toEqual("");
+        expect(getFieldText(entry.fields.get("uuid"))).toBeUndefined();
+        expect(getFieldText(entry.fields.get("cardholder name"))).toEqual("Example Cardholder Name");
         expect(entry.tags).toEqual(["Favourite", "example"]);
     });
 
@@ -171,24 +171,24 @@ describe("Imports from OnePassword PIF", () => {
         expect(group.entries.length).toEqual(2);
         expect(group.name).toEqual("Email");
         const entry = group.entries[0];
-        expect(getFieldText(entry.fields.Title)).toEqual("Email Account - full");
-        expect(getFieldText(entry.fields.URL)).toEqual("");
-        expect(getFieldText(entry.fields.UserName)).toEqual("popusername");
-        expect(getFieldText(entry.fields["UserName (copy)"])).toEqual("smtpusername");
-        expect(getFieldText(entry.fields.Notes)).toEqual("Email notes");
-        expect(getFieldText(entry.fields.Password)).toEqual("poppassword");
-        expect(getFieldText(entry.fields["Password (copy)"])).toEqual("smtppassword");
-        expect(getFieldText(entry.fields.uuid)).toBeUndefined();
-        expect(getFieldText(entry.fields["provider's website"])).toEqual("https://www.email.com/");
+        expect(getFieldText(entry.fields.get("Title"))).toEqual("Email Account - full");
+        expect(getFieldText(entry.fields.get("URL"))).toEqual("");
+        expect(getFieldText(entry.fields.get("UserName"))).toEqual("popusername");
+        expect(getFieldText(entry.fields.get("UserName (copy)"))).toEqual("smtpusername");
+        expect(getFieldText(entry.fields.get("Notes"))).toEqual("Email notes");
+        expect(getFieldText(entry.fields.get("Password"))).toEqual("poppassword");
+        expect(getFieldText(entry.fields.get("Password (copy)"))).toEqual("smtppassword");
+        expect(getFieldText(entry.fields.get("uuid"))).toBeUndefined();
+        expect(getFieldText(entry.fields.get("provider's website"))).toEqual("https://www.email.com/");
         expect(entry.history.length).toEqual(1);
-        expect(getFieldText(entry.history[0].fields.Password)).toEqual("old pop password");
+        expect(getFieldText(entry.history[0].fields.get("Password"))).toEqual("old pop password");
         expect(entry.history[0].history.length).toEqual(0);
         expect(entry.tags).toEqual(["TAG3"]);
         expect(rootGroup.groups[0].entries.length).toEqual(1);
-        expect(rootGroup.groups[0].entries[0].fields.Title).toEqual("Password - trashed");
+        expect(rootGroup.groups[0].entries[0].fields.get("Title")).toEqual("Password - trashed");
     });
 });
 
-function getFieldText (field: string | ProtectedValue) {
+function getFieldText (field?: KdbxEntryField) {
     return field instanceof ProtectedValue ? field.getText() : field;
 }

@@ -1,5 +1,5 @@
 // tslint:disable:max-line-length
-import { KdbxMeta, ProtectedValue } from "kdbxweb";
+import { KdbxEntryField, KdbxMeta, ProtectedValue } from "kdbxweb";
 import { KdbxImport } from "../main";
 
 const meta =
@@ -49,22 +49,22 @@ describe("Imports from Dashlane JSON", () => {
         expect(rootGroup.groups.length).toEqual(1); // Recycle bin = [0]
         const entry1 = rootGroup.entries[0];
         const entry2 = rootGroup.entries[1];
-        expect(getFieldText(entry1.fields.Title)).toEqual("Title example");
-        expect(getFieldText(entry1.fields.URL)).toEqual("https://www.google.com");
-        expect(getFieldText(entry1.fields.UserName)).toEqual("Username");
-        expect(getFieldText(entry1.fields.Notes)).toEqual("Test note");
-        expect(getFieldText(entry1.fields.Password)).toEqual("pass");
-        expect(getFieldText(entry1.fields.uuid)).toBeUndefined();
+        expect(getFieldText(entry1.fields.get("Title"))).toEqual("Title example");
+        expect(getFieldText(entry1.fields.get("URL"))).toEqual("https://www.google.com");
+        expect(getFieldText(entry1.fields.get("UserName"))).toEqual("Username");
+        expect(getFieldText(entry1.fields.get("Notes"))).toEqual("Test note");
+        expect(getFieldText(entry1.fields.get("Password"))).toEqual("pass");
+        expect(getFieldText(entry1.fields.get("uuid"))).toBeUndefined();
         expect(entry1.history.length).toEqual(0);
         expect(entry1.tags).toEqual([]);
-        expect(getFieldText(entry2.fields.Title)).toEqual("Title example 2");
-        expect(getFieldText(entry2.fields.URL)).toEqual("www.google.com");
-        expect(getFieldText(entry2.fields.UserName)).toEqual("email@email.com");
-        expect(getFieldText(entry2.fields.Notes)).toEqual("Test note 2");
-        expect(getFieldText(entry2.fields.Password)).toEqual("pass2");
+        expect(getFieldText(entry2.fields.get("Title"))).toEqual("Title example 2");
+        expect(getFieldText(entry2.fields.get("URL"))).toEqual("www.google.com");
+        expect(getFieldText(entry2.fields.get("UserName"))).toEqual("email@email.com");
+        expect(getFieldText(entry2.fields.get("Notes"))).toEqual("Test note 2");
+        expect(getFieldText(entry2.fields.get("Password"))).toEqual("pass2");
     });
 });
 
-function getFieldText (field: string | ProtectedValue) {
+function getFieldText (field?: KdbxEntryField) {
     return field instanceof ProtectedValue ? field.getText() : field;
 }
